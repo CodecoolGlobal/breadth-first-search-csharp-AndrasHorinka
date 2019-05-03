@@ -48,12 +48,40 @@ namespace BFS_c_sharp
                 AddFriendsAtShortestDistance(f, ref FriendsToBeExtended, distance + 1);
             }
         }
+
+
+        public static void FriendsAtGivenDistance(UserNode startingFriend, int maxDistance)
+        {
+            Dictionary<UserNode, int> FriendsToBeExtended = new Dictionary<UserNode, int>();
+
+            AddFriendsAtShortestDistance(startingFriend, ref FriendsToBeExtended, 1, maxDistance);
+
+            Console.WriteLine($"The list of Friends within {maxDistance} distance: ");
+            foreach (KeyValuePair<UserNode, int> pair in FriendsToBeExtended)
+            {
+                Console.WriteLine($"{pair.Key} at distance: {pair.Value}");
+            }
+        }
+
+        private static void AddFriendsAtShortestDistance(UserNode friend, ref Dictionary<UserNode, int> FriendsToBeExtended, int distance, int maxDistance)
+        {
+            foreach (var f in friend.Friends)
+            {
+                if (!FriendsToBeExtended.ContainsKey(f))
+                {
+                    FriendsToBeExtended[friend] = distance + 1;
+                }
+                else
+                {
+                    FriendsToBeExtended[friend] = Math.Min(distance + 1, FriendsToBeExtended[friend]);
+                }
+
+                if (maxDistance > distance + 1)
+                {
+                    AddFriendsAtShortestDistance(f, ref FriendsToBeExtended, distance + 1);
+                }
+            }
+        }
     }
 
-
-
-
-}
-
-    
 }
